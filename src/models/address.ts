@@ -5,6 +5,7 @@ import {
   parseAddress,
   generateAddress,
   LumosConfigs,
+  verifyCardanoAddress,
   verifyCkbAddress,
   verifyEthAddress,
   cellOccupiedBytes,
@@ -22,6 +23,7 @@ export enum AddressPrefix {
 }
 
 export enum AddressType {
+  cardano,
   ckb,
   eth,
   // btc,
@@ -65,6 +67,8 @@ export class Address {
         return verifyCkbAddress(this.addressString);
       case AddressType.eth:
         return verifyEthAddress(this.addressString);
+      case AddressType.cardano:
+        return verifyCardanoAddress(this.addressString);
       default:
         return true;
     }

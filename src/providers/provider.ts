@@ -1,6 +1,7 @@
 import { Address } from '..';
 
 export enum Platform {
+  cardano,
   ckb,
   eth,
   // btc,

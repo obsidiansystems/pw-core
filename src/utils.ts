@@ -277,6 +277,11 @@ export function verifyEthAddress(address: string): boolean {
   return /^0x[a-fA-F0-9]{40}$/.test(address);
 }
 
+export function verifyCardanoAddress(address: string): boolean {
+  return /[a-fA-F0-9]$/.test(address);
+}
+
+
 export const hexDataOccupiedBytes = (hexString) => {
   // Exclude 0x prefix, and every 2 hex digits are one byte
   return (hexString.length - 2) / 2;

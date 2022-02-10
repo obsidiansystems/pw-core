@@ -1,5 +1,5 @@
 {
-  "name": "@lay2/pw-core",
+  "name": "fb-pw-core",
   "version": "0.3.22",
   "description": "the javascript sdk of pw-sdk",
   "main": "build/main/index.js",
