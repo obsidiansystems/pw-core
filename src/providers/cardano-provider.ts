@@ -33,14 +33,25 @@ export class CardanoProvider extends Provider {
 
   async sign(message: string): Promise<string> {
     //const from = this.address.addressString;
-    const namiApi = await window.cardano.enable();
+    const namiApi = await window.cardano.nami.enable();
     //checkout exmaple in message-siging repo, also CIP-0008 could help
-    const msgSignLib = await import('@emurgo/cardano-message-signing-browser');
+    const ms = await import('@emurgo/cardano-message-signing-browser');
+    const serialization = await import('@emurgo/cardano-serialization-lib-browser');
+    const protectedHeaders = ms.HeaderMap.new();
+    const protectedSerialized = ms.ProtectedHeaderMap.new(protectedHeaders);
+    const unprotected = ms.HeaderMap.new();
+    const headers = ms.Headers.new(protectedSerialized, unprotected);
+    const tempUInt8Arr = serialization.TransactionHash.from_bytes(Buffer.from('8561258e210352fba2ac0488afed67b3427a27ccf1d41ec030c98a8199bc22ec', 'hex')).to_bytes()
 
-    const protectedHeaders = msgSignLib.HeaderMap.new();
-    console.log(protectedHeaders);
-//    console.log(msgSignLib.COSESign1Builder.new());
-    //namiApi.
+    const builder = ms.COSESign1Builder.new(headers, tempUInt8Arr, false);
+    console.log('builder: ', ms.COSESign1Builder.new(headers, tempUInt8Arr, false));
+    const toSign = builder.make_data_to_sign();
+    console.log('toSignfn ', builder.make_data_to_sign());
+    console.log('toSign: ', toSign);
+    console.log('addr: ', serialization.Address);
+    console.log('signData: ', await namiApi.signData(this.address, toSign));
+    const result = await namiApi.signData(this.address, toSign);
+    console.log('result: ', result);
 
     return message; //temp fix to satisfy warnings
   }
